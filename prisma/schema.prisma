@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  email      String     @unique
+  password   String
+  image      String?
+  role       String
+  first_name String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  purchases  Purchase[]
+}
+
+model Client {
+  id         Int      @id @default(autoincrement())
+  ref        String
+  first_name String
+  last_name  String
+  address    String
+  email      String
+  // Relations
+  sales      Sale[]
+  rentals    Rental[]
+}
+
+model Equipment {
+  id             Int        @id @default(autoincrement())
+  ref            String
+  design         String
+  purchase_price Float
+  sale_price     Float
+  // Relations
+  purchases      Purchase[]
+  sales          Sale[]
+}
+
+model Room {
+  id           Int      @id @default(autoincrement())
+  room_number  String
+  rental_price Float
+  // Relations
+  rentals      Rental[]
+}
+
+model Purchase {
+  id            Int       @id @default(autoincrement())
+  purchase_date DateTime
+  user_id       Int
+  equipment_id  Int
+  // Relations
+  user          User      @relation(fields: [user_id], references: [id])
+  equipment     Equipment @relation(fields: [equipment_id], references: [id])
+}
+
+model Sale {
+  id           Int       @id @default(autoincrement())
+  sale_date    DateTime
+  client_id    Int
+  equipment_id Int
+  // Relations
+  client       Client    @relation(fields: [client_id], references: [id])
+  equipment    Equipment @relation(fields: [equipment_id], references: [id])
+}
+
+model Rental {
+  id         Int      @id @default(autoincrement())
+  start_date DateTime
+  end_date   DateTime
+  client_id  Int
+  room_id    Int
+  // Relations
+  client     Client   @relation(fields: [client_id], references: [id])
+  room       Room     @relation(fields: [room_id], references: [id])
+}
+
+model Training {
+  id                Int             @id @default(autoincrement())
+  training_name     String
+  participation_fee Float
+  duration          Int
+  // Relations
+  participations    Participation[]
+  assignments       Assignment[]
+}
+
+model Student {
+  id             Int             @id @default(autoincrement())
+  registration   String          @unique
+  first_name     String
+  last_name      String
+  email          String
+  address        String
+  image          String
+  // Relations
+  participations Participation[]
+}
+
+model Professor {
+  id          Int          @id @default(autoincrement())
+  ref         String
+  first_name  String
+  last_name   String
+  email       String
+  address     String
+  // Relations
+  assignments Assignment[]
+}
+
+model Participation {
+  id                 Int      @id @default(autoincrement())
+  participation_date DateTime
+  student_id         Int
+  training_id        Int
+  // Relations
+  student            Student  @relation(fields: [student_id], references: [id])
+  training           Training @relation(fields: [training_id], references: [id])
+}
+
+model Assignment {
+  id              Int       @id @default(autoincrement())
+  assignment_date DateTime
+  professor_id    Int
+  training_id     Int
+  // Relations
+  professor       Professor @relation(fields: [professor_id], references: [id])
+  training        Training  @relation(fields: [training_id], references: [id])
+}
