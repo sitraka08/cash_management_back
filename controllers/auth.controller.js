@@ -21,7 +21,7 @@ export const login = async (req, res) => {
       {
         id: user.id,
         role: user.role,
-        nom: user.nom,
+        first_name: user.first_name,
         image: user.image,
       },
       process.env.JWT_SECRET_KEY,
@@ -35,6 +35,4 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => {
-  res.clearCookie("token").status(200).json({ message: "Logout Successful" });
-};
+export const logout = (req, res) => {};

@@ -7,6 +7,9 @@ import clientRoute from "./routes/client.route.js";
 import profRoute from "./routes/prof.route.js";
 import studentRoute from "./routes/student.route.js";
 import equipmentRoute from "./routes/equipment.route.js";
+import roomRoute from "./routes/room.route.js";
+import trainingRoute from "./routes/training.route.js";
+
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -23,7 +26,9 @@ app.use("/api/users", userRoute);
 app.use("/api/clients", clientRoute);
 app.use("/api/profs", profRoute);
 app.use("/api/students", studentRoute);
-app.use("/api/equipment", equipmentRoute);
+app.use("/api/equipments", equipmentRoute);
+app.use("/api/rooms", roomRoute);
+app.use("/api/trainings", trainingRoute);
 
 app.listen(8000, () => {
   console.log("Server is running");

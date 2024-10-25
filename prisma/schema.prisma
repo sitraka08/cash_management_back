@@ -98,7 +98,7 @@ model Student {
   last_name      String
   email          String
   address        String
-  image          String
+  image          String?
   // Relations
   participations Participation[]
 }

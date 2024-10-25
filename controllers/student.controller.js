@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma.js";
-import { addUpload, addZero, getFilePath, removeUpload } from "../lib/utils.js";
+import { filePath, addZero, deleteFile } from "../lib/utils.js";
 import fs from "fs"; // Importer File System
 
 export const getStudent = async (req, res) => {
@@ -17,59 +17,68 @@ export const getStudent = async (req, res) => {
 };
 
 export const addStudent = async (req, res) => {
-  const { nom, adresse, email, prenom } = req.body;
-  const imagePath = req?.file?.path || null;
+  const { first_name, last_name, email, address } = req.body;
+
   try {
     const count = await prisma.student.count();
     const students = await prisma.student.create({
       data: {
-        matricule: `${addZero(count + 1)}W-E`,
-        nom,
-        prenom,
-        adresse,
+        registration: `${addZero(count + 1)}W-E`,
+        first_name,
+        last_name,
         email,
-        image: imagePath ? addUpload(req) : null,
+        address,
+        image: req?.file ? filePath(req) : null,
       },
     });
-    res.status(201).json({ etudiants: etudiants, message: "Created" });
+    res.status(201).json({ students: students, message: "Created" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-export const updateEtudiant = async (req, res) => {
-  const id = req.params.id;
-  const { nom, adresse, email, prenom, image, matricule } = req.body;
+export const updateStudent = async (req, res) => {
+  const { id } = req.params;
+  const { first_name, last_name, email, address, image } = req.body;
   try {
-    const oneStudent = await prisma.etudiant.findUnique({
+    const oneStudent = await prisma.student.findUnique({
       where: {
         id: parseInt(id),
       },
     });
+    console.log(oneStudent, "onesere");
 
-    if (req.file) {
-      fs.unlink(oneStudent.image, (err) => {
-        if (err) {
-          console.error("Error deleting file:", err);
-        } else {
-          console.log("File deleted due to error");
-        }
-      });
+    if (req?.file && oneStudent.image) {
+      deleteFile(oneStudent.image);
     }
-    const etudiant = await prisma.etudiant.update({
+
+    const student = await prisma.student.update({
       where: {
         id: parseInt(id),
       },
       data: {
-        nom,
-        adresse,
+        first_name,
+        last_name,
         email,
-        matricule,
-        prenom,
-        image: req.file ? addUpload(req) : image,
+        address,
+        image: req.file ? filePath(req) : image,
       },
     });
-    res.status(200).json({ etudiant, message: "Updated" });
+    res.status(200).json({ student, message: "Updated" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const deleteStudent = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const student = await prisma.student.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    res.status(200).json({ student, message: "Deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

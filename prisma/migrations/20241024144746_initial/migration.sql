@@ -94,7 +94,7 @@ CREATE TABLE `Student` (
     `last_name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `address` VARCHAR(191) NOT NULL,
-    `image` VARCHAR(191) NOT NULL,
+    `image` VARCHAR(191) NULL,
 
     UNIQUE INDEX `Student_registration_key`(`registration`),
     PRIMARY KEY (`id`)
