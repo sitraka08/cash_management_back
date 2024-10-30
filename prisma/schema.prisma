@@ -127,6 +127,7 @@ model Participation {
 model Assignment {
   id              Int       @id @default(autoincrement())
   assignment_date DateTime
+  salary          Float
   professor_id    Int
   training_id     Int
   // Relations

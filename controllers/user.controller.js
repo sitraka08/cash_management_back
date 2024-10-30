@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import fs from "fs"; // Importer File System
 import { deleteFile, filePath } from "../lib/utils.js";
 
-export const getUsers = async (_, res) => {
+export const  getUsers = async (_, res) => {
   try {
     const users = await prisma.user.findMany({
       orderBy: {

@@ -9,6 +9,9 @@ import studentRoute from "./routes/student.route.js";
 import equipmentRoute from "./routes/equipment.route.js";
 import roomRoute from "./routes/room.route.js";
 import trainingRoute from "./routes/training.route.js";
+import assignmentRoute from "./routes/assignment.route.js";
+import participationsRoute from "./routes/participations.route.js";
+import salesRoute from "./routes/sale.route.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -29,7 +32,10 @@ app.use("/api/students", studentRoute);
 app.use("/api/equipments", equipmentRoute);
 app.use("/api/rooms", roomRoute);
 app.use("/api/trainings", trainingRoute);
+app.use("/api/assignments", assignmentRoute);
+app.use("/api/participations", participationsRoute);
+app.use("/api/sales", salesRoute);
 
-app.listen(8000, () => {
+app.listen(3000, () => {
   console.log("Server is running");
 });

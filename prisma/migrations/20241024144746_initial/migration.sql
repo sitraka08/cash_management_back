@@ -126,6 +126,7 @@ CREATE TABLE `Participation` (
 CREATE TABLE `Assignment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `assignment_date` DATETIME(3) NOT NULL,
+    `salary` DOUBLE NOT NULL,
     `professor_id` INTEGER NOT NULL,
     `training_id` INTEGER NOT NULL,
 
